@@ -16,26 +16,25 @@ pipeline {
             project_folder_name : 'final',
             cluster_region : 'us-east-1',
             cluster_name   : 'Atech',
-            helm_sh        : 'helm install hamadtest -f values.yaml -n hamad .'
         ]
     }
 
-    triggers {
-        GenericTrigger(
-            genericVariables: [
-                [key: 'refsb', value: '$.ref'],
-                [key: 'pusher', value: '$.pusher.name'],
-                [key: 'change_files', value: '$.commits[0].modified[0]']
-            ],
-            token: "123456",
-            tokenCredentialId: '',
-            printContributedVariables: true,
-            printPostContent: false,
-            silentResponse: false,
-            regexpFilterText: '$refsb $change_files',
-            regexpFilterExpression: '^(refs/heads/main)'
-        )
-    }
+    // triggers {
+    //     GenericTrigger(
+    //         genericVariables: [
+    //             [key: 'refsb', value: '$.ref'],
+    //             [key: 'pusher', value: '$.pusher.name'],
+    //             [key: 'change_files', value: '$.commits[0].modified[0]']
+    //         ],
+    //         token: "123456",
+    //         tokenCredentialId: '',
+    //         printContributedVariables: true,
+    //         printPostContent: false,
+    //         silentResponse: false,
+    //         regexpFilterText: '$refsb $change_files',
+    //         regexpFilterExpression: '^(refs/heads/main)'
+    //     )
+    // }
 
     stages {
 
