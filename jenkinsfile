@@ -83,13 +83,15 @@ pipeline {
         stage('Copy PEM File to Node') {
             steps {
                 script {
-                    withCredentials([file(credentialsId: 'alb2_cert', variable: 'CREDENTIAL_FILE')]) {
+                        withCredentials([file(credentialsId: 'alb2_cert', variable: 'CREDENTIAL_FILE')]) {
                         def filePath = env.CREDENTIAL_FILE
-                        def destinationDir = '/home/ubuntu/workspace/final_test/final/aws_project/polybot'
+                        def destinationDir = '/home/ubuntu/workspace/DevOpsFinalProject/aws_project/polybot'
 
+                        // Copy the PEM file to the destination directory
                         sh "cp ${filePath} ${destinationDir}"
+
+                        // Change permissions of the copied PEM file (adjust the filename as per your actual file)
                         sh "sudo chmod 666 ${destinationDir}/YOURPUBLIC.pem"
-                    }
                 }
             }
         }
