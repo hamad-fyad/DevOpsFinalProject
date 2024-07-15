@@ -85,7 +85,7 @@ pipeline {
                 script {
                         withCredentials([file(credentialsId: 'alb2_cert', variable: 'CREDENTIAL_FILE')]) {
                         def filePath = env.CREDENTIAL_FILE
-                        def destinationDir = '/home/ubuntu/workspace/DevOpsFinalProject/aws_project/polybot'
+                        def destinationDir = '/home/ubuntu/workspace/DevOpsFinalProject/final/aws_project/polybot'
 
                         // Copy the PEM file to the destination directory
                         sh "cp ${filePath} ${destinationDir}"
