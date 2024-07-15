@@ -129,7 +129,9 @@ pipeline {
         stage('Read helm chart values') {
             steps {
                 script {
-                    dir("${WORKSPACE}/${PROP.project_folder_name}") {
+                    echo "${WORKSPACE}"
+                    dir("./${WORKSPACE}/${PROP.project_folder_name}") {
+                        echo "${WORKSPACE}"
                         sh 'ls -l'
                         def chartValues = readFile(file: 'values.yaml')
                         JOB.buildChartValues = chartValues
