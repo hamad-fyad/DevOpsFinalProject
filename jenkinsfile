@@ -16,7 +16,7 @@
     }
 pipeline {
 
-    agent { label 'jenkins_ec2' } // Use the label of your EC2 agent
+    agent { label 'ec2' } // Use the label of your EC2 agent
 
 
     // triggers {
