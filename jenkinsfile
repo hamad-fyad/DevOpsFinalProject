@@ -83,7 +83,7 @@ pipeline {
         stage('Copy PEM File to Node') {
             steps {
                 script {
-                           withCredentials([file(credentialsId: 'alb2_cert', variable: 'CREDENTIAL_FILE')]) {
+                        withCredentials([file(credentialsId: 'alb2_cert', variable: 'CREDENTIAL_FILE')]) {
                         def filePath = env.CREDENTIAL_FILE
                         def destinationDir = '/home/ubuntu/workspace/DevOpsFinalProject/aws_project/polybot'
 
