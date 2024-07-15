@@ -1,13 +1,9 @@
-pipeline {
-
-    agent { label 'jenkins_ec2' } // Use the label of your EC2 agent
-
     environment {
         JOB = [:]
         PROP = [
             git_cred       : 'hamad-fyad-githubToken',
             branch         : 'main',
-            proj_url       : 'https://github.com/hamad-fyad/devops-project.git',
+            proj_url       : 'https://github.com/hamad-fyad/DevOpsFinalProject.git',
             dockerhub_cred : 'dockerlogin',
             docker_image1  : 'hamadfyad/poly',
             docker_image2  : 'hamadfyad/yolo',
@@ -18,6 +14,10 @@ pipeline {
             cluster_name   : 'Atech',
         ]
     }
+pipeline {
+
+    agent { label 'jenkins_ec2' } // Use the label of your EC2 agent
+
 
     // triggers {
     //     GenericTrigger(
