@@ -130,8 +130,7 @@ pipeline {
             steps {
                 script {
                     echo "${WORKSPACE}"
-                    dir("./${WORKSPACE}/${PROP.project_folder_name}") {
-                        echo "${WORKSPACE}"
+                    dir("${WORKSPACE}/${PROP.project_folder_name}/telegram-app") {
                         sh 'ls -l'
                         def chartValues = readFile(file: 'values.yaml')
                         JOB.buildChartValues = chartValues
