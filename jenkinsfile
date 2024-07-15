@@ -1,5 +1,14 @@
-    environment {
-        JOB = [:]
+import groovy.json.JsonBuilder
+import groovy.json.JsonSlurper
+import groovy.json.JsonSlurperClassic
+import groovy.transform.Field    
+    
+    
+
+       @Field JOB = [:]
+
+JOB.trigg_by = currentBuild.getBuildCauses('hudson.model.Cause$UserIdCause').userName
+
         PROP = [
             git_cred       : 'hamad-fyad-githubToken',
             branch         : 'main',
@@ -13,7 +22,7 @@
             cluster_region : 'us-east-1',
             cluster_name   : 'Atech',
         ]
-    }
+    
 pipeline {
 
     agent { label 'ec2' } // Use the label of your EC2 agent
