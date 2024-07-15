@@ -103,7 +103,7 @@ pipeline {
                     echo "=====================================${STAGE_NAME}====================================="
                     sh "echo $pwd"
                     sh "docker build -t ${PROP.docker_image1}:${PROP.docker_tag} /home/ubuntu/workspace/DevOpsFinalProject/final/aws-project/polybot"
-                    sh "docker build -t ${PROP.docker_image2}:${PROP.docker_tag} ./workspace/DevOpsFinalProject/final/aws-project/yolo5"
+                    sh "docker build -t ${PROP.docker_image2}:${PROP.docker_tag} /home/ubuntu/workspace/DevOpsFinalProject/final/aws-project/yolo5"
                 }
             }
         }
