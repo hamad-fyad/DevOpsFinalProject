@@ -1,0 +1,31 @@
+replicaCount: 1
+
+releaseName: final-project
+
+image:
+  polyRepository: hamadfyad/poly
+  polyTag: "1.7"
+  yoloRepository: hamadfyad/yolo
+  yoloTag: "1.7"
+
+polyPort: 8443
+yoloPort: 8441
+
+
+service:
+  port: 80
+
+ingress:
+  name: ingress-hosts
+  host: hamad.atech-bot.click
+  path: "/"
+  tls: tls-secret-hamad
+
+imagePullSecrets: dockerhub
+
+maxSurge: 3
+
+hpa:
+  minReplicas: 1
+  maxReplicas: 5
+  targetCPUUtilizationPercentage: 50

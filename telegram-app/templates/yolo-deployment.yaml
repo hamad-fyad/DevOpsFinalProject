@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.releaseName }}-yolo-deployment
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ .Values.releaseName }}-yolo
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
+      maxSurge: {{ .Values.maxSurge }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.releaseName }}-yolo
+    spec:
+      containers:
+        - name: {{ .Values.releaseName }}-yolo
+          image: {{ .Values.image.yoloRepository }}:{{ .Values.image.yoloTag }}
+          env:
+            - name: BUCKET_NAME
+              value: "hamad-aws-project"
+            - name: SQS_QUEUE_NAME
+              value: "hamad-aws-project-sqs" 
+            - name: LOAD_BALANCER
+              value: "https://hamad.atech-bot.click"
+            - name: DYNAMO_TABLE
+              value: "hamad-aws-project-db"
+          resources:
+            requests:
+              cpu: "100m"
+            limits:
+              cpu: "500m"
+          volumeMounts:
+            - name: aws-credentials
+              mountPath: /root/.aws
+              readOnly: true
+          ports:
+            - containerPort: {{ .Values.yoloPort }}
+      imagePullSecrets:
+        - name: {{ .Values.imagePullSecrets }}
+      volumes:
+        - name: aws-credentials
+          secret:
+            secretName: aws-credentials

@@ -1,0 +1,19 @@
+version: "3"
+services:
+  poly:
+    build: .
+    
+    container_name: poly
+    
+    ports:
+      - 8443:8443
+
+    environment:
+      - LOAD_BALANCER="https://hamad.atech-bot.click"
+    volumes:
+      - ~/.aws/credentials:/root/.aws/credentials
+      - ./bot.py:/app/bot.py
+      - ./app.py:/app/app.py
+      - /Users/hamadfyad/.kube/config:/root/.kube/config
+
+    restart: always

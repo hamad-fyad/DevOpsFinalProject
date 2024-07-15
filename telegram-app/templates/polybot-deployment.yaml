@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.releaseName }}-polybot-deployment
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ .Values.releaseName }}-polybot
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
+      maxSurge: {{ .Values.maxSurge }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.releaseName }}-polybot
+    spec:
+      containers:
+        - name: {{ .Values.releaseName }}-polybot
+          image: {{ .Values.image.polyRepository }}:{{ .Values.image.polyTag }}
+          env:
+            - name: LOAD_BALANCER
+              value: "https://hamad.atech-bot.click"
+          volumeMounts:
+            - name: aws-credentials
+              mountPath: /root/.aws
+              readOnly: true
+          ports:
+            - containerPort: {{ .Values.polyPort }}
+      imagePullSecrets:
+        - name: {{ .Values.imagePullSecrets }}
+      volumes:
+        - name: aws-credentials
+          secret:
+            secretName: aws-credentials

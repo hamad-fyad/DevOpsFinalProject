@@ -1,0 +1,16 @@
+version: "3"
+services:
+  yolo5:
+    image: yolo5
+    container_name: yolo5
+    ports:
+        - 8081:8081
+        
+    environment:
+        - BUCKET_NAME=hamad-aws-project
+        - SQS_QUEUE_NAME=hamad-aws-project-sqs
+        
+    volumes:
+        - ../.aws/credentials:/root/.aws/credentials # TODO: Change credentials path take it from the secret in kubernetes
+        - ./yolo5/app.py:/usr/src/app/app.py
+    restart: always
