@@ -78,7 +78,7 @@ pipeline {
                     ])
                 }
             }
-        }//asdas
+        }
   stage('SonarQube Scan') {
             steps {
                 script {
