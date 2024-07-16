@@ -46,7 +46,7 @@ pipeline {
     // }
 
     stages {
-
+            
         stage('Hello') {
             steps {
                 script {
@@ -79,7 +79,20 @@ pipeline {
                 }
             }
         }
-
+  stage('SonarQube Scan') {
+            steps {
+                script {
+                    println("=====================================${STAGE_NAME}=====================================")
+                    withCredentials([string(credentialsId: 'sonar_token', variable: 'SONAR_TOKEN')]) {
+                        sh "sonar-scanner \
+                        -Dsonar.projectKey=hamad-project \
+                        -Dsonar.sources=./final/aws-project \
+                        -Dsonar.host.url=https://sonarqube.atech-bot.click/ \
+                        -Dsonar.login=${SONAR_TOKEN}"
+                    }
+                }
+            }
+        }
         stage('Copy PEM File to Node') {
             steps {
                 script {
@@ -185,7 +198,7 @@ pipeline {
 
         stage('Trigger Argocd') {
             steps {
-                build job: 'argocd', wait: true
+                build job: 'argocd', wait: true //todo make the trigger argocd pipeline and make a new github repo for argocd pipeline
             }
         }
     }
