@@ -79,17 +79,36 @@ pipeline {
                 }
             }
         }
-  stage('SonarQube Scan') {
+  stage('Checkout') {
+            steps {
+                checkout scm
+            }
+        }
+        stage('Install SonarScanner') {
+            steps {
+                sh '''
+                wget https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-4.6.2.2472-linux.zip && \
+                unzip sonar-scanner-cli-4.6.2.2472-linux.zip && \
+                sudo mv sonar-scanner-4.6.2.2472-linux /opt/sonar-scanner
+                '''
+            }
+        }
+        stage('SonarQube Scan') {
+            environment {
+                JAVA_HOME = '/usr/lib/jvm/java-17-openjdk-amd64'
+                PATH = "${JAVA_HOME}/bin:/opt/sonar-scanner/bin:${env.PATH}"
+            }
             steps {
                 script {
                     println("=====================================${STAGE_NAME}=====================================")
                     withCredentials([string(credentialsId: 'sonar_token', variable: 'SONAR_TOKEN')]) {
-                        //sh "source /home/ubuntu/.bashrc"
-                        sh "sonar-scanner \
+                        sh '''
+                        sonar-scanner \
                         -Dsonar.projectKey=hamad-project \
-                        -Dsonar.sources=/home/ubuntu/workspace/DevOpsFinalProject/final/aws-project \
-                        -Dsonar.host.url=https://sonarqube.atech-bot.click/ \
-                        -Dsonar.login=${SONAR_TOKEN}"
+                        -Dsonar.sources=. \
+                        -Dsonar.host.url=https://sonarqube.atech-bot.click \
+                        -Dsonar.login=${SONAR_TOKEN}
+                        '''
                     }
                 }
             }
