@@ -87,7 +87,7 @@ pipeline {
                         //sh "source /home/ubuntu/.bashrc"
                         sh "sonar-scanner \
                         -Dsonar.projectKey=hamad-project \
-                        -Dsonar.sources=final/aws-project \
+                        -Dsonar.sources=/home/ubuntu/workspace/DevOpsFinalProject/final/aws-project \
                         -Dsonar.host.url=https://sonarqube.atech-bot.click/ \
                         -Dsonar.login=${SONAR_TOKEN}"
                     }
