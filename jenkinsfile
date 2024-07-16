@@ -83,7 +83,7 @@ pipeline {
             steps {
                 script {
                     println("=====================================${STAGE_NAME}=====================================")
-                    withCredentials([text(credentialsId: 'sonar_token', variable: 'SONAR_TOKEN')]) {
+                    withCredentials([secret(credentialsId: 'sonar_token', variable: 'SONAR_TOKEN')]) {
                         sh "sonar-scanner \
                         -Dsonar.projectKey=hamad-project \
                         -Dsonar.sources=./final/aws-project \
