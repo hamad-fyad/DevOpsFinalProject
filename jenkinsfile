@@ -62,7 +62,7 @@ pipeline {
                     echo "=====================================${STAGE_NAME}====================================="
                     echo "Cloning from branch ${PROP.branch} and using credentials ${PROP.git_cred}"
 
-                    // Enable sparse checkout
+                    // Enable sparse checkouts
                     checkout([
                         $class: 'GitSCM',
                         branches: [[name: "*/${PROP.branch}"]],
