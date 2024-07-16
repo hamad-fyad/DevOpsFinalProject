@@ -84,7 +84,9 @@ pipeline {
                 script {
                     println("=====================================${STAGE_NAME}=====================================")
                     withCredentials([string(credentialsId: 'sonar_token', variable: 'SONAR_TOKEN')]) {
-                        sh "sonar-scanner \
+                        sh " source ~/.bashrc "
+                        sh "
+                        sonar-scanner \
                         -Dsonar.projectKey=hamad-project \
                         -Dsonar.sources=./final/aws-project \
                         -Dsonar.host.url=https://sonarqube.atech-bot.click/ \
