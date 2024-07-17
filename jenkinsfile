@@ -121,6 +121,7 @@ pipeline {
                     }
                 }
             }
+            }
         
         stage('Copy PEM File to Node') {
             steps {
