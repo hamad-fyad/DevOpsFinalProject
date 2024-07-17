@@ -80,10 +80,7 @@ pipeline {
             }
         }//asd
         stage('SonarQube Scan') {
-            environment {
-                JAVA_HOME = '/usr/lib/jvm/java-17-openjdk-amd64'
-                PATH = "${JAVA_HOME}/bin:/opt/sonar-scanner/bin:${env.PATH}"
-            }
+           
             steps {
                 script {
                     println("=====================================${STAGE_NAME}=====================================")
