@@ -217,7 +217,7 @@ pipeline {
         }
 
         stage('Login to EKS') {
-            steps {//sdasdas
+            steps {
                 withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: PROP['aws_cli_cred']]]) {
                     script {
                         sh "aws eks --region ${PROP.cluster_region} update-kubeconfig --name ${PROP.cluster_name}"
@@ -226,12 +226,12 @@ pipeline {
             }
         }
 
-    //     stage('Trigger Argocd') {
-    //         steps {
-    //             build job: 'argocd', wait: true //todo make the trigger argocd pipeline and make a new github repo for argocd pipeline
-    //         }
-    //     }
-    // }
+        // stage('Trigger Argocd') {
+        //     steps {
+        //         build job: 'argocd', wait: true //todo make the trigger argocd pipeline and make a new github repo for argocd pipeline
+        //     }
+        // }
+    }
 
     // post {
     //     always {
