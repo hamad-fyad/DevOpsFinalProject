@@ -230,7 +230,7 @@ pipeline {
         //     steps {
         //         build job: 'argocd', wait: true //todo make the trigger argocd pipeline and make a new github repo for argocd pipeline
         //     }
-        // }sdad
+        // }
     }
 
     // post {
