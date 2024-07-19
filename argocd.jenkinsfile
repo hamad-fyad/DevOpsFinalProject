@@ -11,7 +11,7 @@ PROP = [:]
 
 PROP['git_cred'] = 'github_ssh2' // Jenkins credential ID for GitHub ssh key create with ssh-keygen -t rsa -b 2048 -C "hamad.fyad.05@gmail.com"
 PROP['branch'] = 'main'
-PROP['proj_url'] = 'https://github.com/bz-22/final-project' // Replace with your project URL
+PROP['proj_url'] = 'https://github.com/hamad-fyad/DevOpsFinalProject.git' // Replace with your project URL
 PROP['project_folder_name'] = 'final'
 
 

@@ -1,0 +1,28 @@
+name: Sync final project to Argocd
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout source repository
+        uses: actions/checkout@v2
+
+      - name: Sync changes to target repository
+        run: |
+          git config --global user.name 'GitHub Action'
+          git config --global user.email 'action@github.com'
+          
+          # Create a bare mirror clone
+          git clone --bare .
+          cd final_project.git
+          # Add the target repository
+          git remote add target https://hamad-fyad:${{ secrets.PAT }}@github.com/hamad-fyad/argocd.git
+
+          # Push to the target repository
+          git push --mirror target
