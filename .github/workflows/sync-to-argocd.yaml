@@ -12,6 +12,9 @@ jobs:
     steps:
       - name: Checkout source repository
         uses: actions/checkout@v2
+        with:
+          repository: hamad-fyad/DevOpsFinalProject
+          token: ${{ secrets.PAT }}
 
       - name: Sync changes to target repository
         run: |
