@@ -24,7 +24,7 @@ spec:
             - name: LOAD_BALANCER
               value: "https://hamad.atech-bot.click"
           volumeMounts:
-            - name: aws-credentials
+            - name: hamad-aws-cred
               mountPath: /root/.aws
               readOnly: true
           ports:
