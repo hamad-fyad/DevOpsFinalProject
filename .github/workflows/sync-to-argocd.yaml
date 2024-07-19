@@ -22,7 +22,7 @@ jobs:
           git config --global user.email 'action@github.com'
           
           # Create a bare mirror clone
-          git clone --bare .
+          git clone --bare https://hamad-fyad:${{ secrets.PAT }}@github.com/hamad-fyad/DevOpsFinalProject.git
           cd DevOpsFinalProject.git
           # Add the target repository
           git remote add target https://hamad-fyad:${{ secrets.PAT }}@github.com/hamad-fyad/argocd.git
