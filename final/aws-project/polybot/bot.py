@@ -96,7 +96,7 @@ class ObjectDetectionBot(Bot):
             photo_key = os.path.basename(photo_path)
 
             # TODO upload the photo to S3
-            s3 = boto3.client('s3',region_name='us-north-1')
+            s3 = boto3.client('s3',region_name='eu-north-1')
             s3.upload_file(photo_path, "hamad-aws-project", photo_key)
 
             print(f"Photo uploaded successfully to S3 bucket: {'hamad-aws-project'} with key: {photo_key}")
