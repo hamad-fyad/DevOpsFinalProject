@@ -1,5 +1,4 @@
-apiVersion: autoscaling/v2beta2
-kind: HorizontalPodAutoscaler
+apiVersion: autoscaling/v1kind: HorizontalPodAutoscaler
 metadata:
   name: {{ .Values.releaseName }}-yolo-hpa
 spec:
