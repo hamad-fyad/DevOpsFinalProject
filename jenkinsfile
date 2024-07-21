@@ -79,36 +79,36 @@ pipeline {
                 }
             }
         }//asd
-        stage('SonarQube Scan') {
+        // stage('SonarQube Scan') {
            
-            steps {
-                script {
-                    println("=====================================${STAGE_NAME}=====================================")
-                    // withCredentials([string(credentialsId: 'sonar_token', variable: 'SONAR_TOKEN')]) {
-                    //     sh '''
-                    //     sonar-scanner \
-                    //     -Dsonar.projectKey=hamad-project \
-                    //     -Dsonar.sources=. \
-                    //     -Dsonar.host.url=https://sonarqube.atech-bot.click \
-                    //     -Dsonar.login=${SONAR_TOKEN}
-                    //     '''
-                    // }
-                    node {
-                        stage('SCM') {
-                            checkout scm
-                        }
-                        stage('SonarQube Analysis') {
-                            def scannerHome = tool 'sonarScanner';
-                            withSonarQubeEnv() {
-                            sh "${scannerHome}/bin/sonar-scanner"
-                            }
-                        }
+        //     steps {
+        //         script {
+        //             println("=====================================${STAGE_NAME}=====================================")
+        //             // withCredentials([string(credentialsId: 'sonar_token', variable: 'SONAR_TOKEN')]) {
+        //             //     sh '''
+        //             //     sonar-scanner \
+        //             //     -Dsonar.projectKey=hamad-project \
+        //             //     -Dsonar.sources=. \
+        //             //     -Dsonar.host.url=https://sonarqube.atech-bot.click \
+        //             //     -Dsonar.login=${SONAR_TOKEN}
+        //             //     '''
+        //             // }
+        //             node {
+        //                 stage('SCM') {
+        //                     checkout scm
+        //                 }
+        //                 stage('SonarQube Analysis') {
+        //                     def scannerHome = tool 'sonarScanner';
+        //                     withSonarQubeEnv() {
+        //                     sh "${scannerHome}/bin/sonar-scanner"
+        //                     }
+        //                 }
                         
-                    }
-                }
-            }
+        //             }
+        //         }
+        //     }
             
-        } 
+        // } 
         // stage('Quality Gate') {
         //     steps {
         //         script {
