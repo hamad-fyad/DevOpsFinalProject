@@ -35,7 +35,7 @@ spec:
             limits:
               cpu: "500m"
           volumeMounts:
-            - name: hamad-aws-credentials
+            - name: hamad-aws-cred
               mountPath: /root/.aws
               readOnly: true
           ports:
