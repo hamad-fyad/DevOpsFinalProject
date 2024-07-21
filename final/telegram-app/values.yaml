@@ -4,9 +4,9 @@ releaseName: final-project
 
 image:
   polyRepository: hamadfyad/poly
-  polyTag: "1.6"
+  polyTag: "1.7"
   yoloRepository: hamadfyad/yolo
-  yoloTag: "1.6"
+  yoloTag: "1.7"
 
 polyPort: 8443
 yoloPort: 8441
