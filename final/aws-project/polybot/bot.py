@@ -162,10 +162,10 @@ class ObjectDetectionBot(Bot):
             # TODO upload the photo to S3
             s3 = boto3.client('s3')
             try:
-                s3.upload_file(photo_path, "hamad-bucket-docker-project", photo_key)
+                s3.upload_file(photo_path, "hamad-aws-project", photo_key)
 
                 print(
-                    f"Photo uploaded successfully to S3 bucket: {'hamad-bucket-docker-project'} with key: {photo_key}")
+                    f"Photo uploaded successfully to S3 bucket: {'hamad-aws-project'} with key: {photo_key}")
             except Exception as e:
                 print(f"could not upload error : {e}")
                 logger.info(f"uploading to s3 has failed error : {e}")
