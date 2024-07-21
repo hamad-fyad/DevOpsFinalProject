@@ -106,7 +106,7 @@ def consume():
 
                 url = f"{alb}/results/?predictionId={prediction_id}"
                 # Send a GET request to the URL
-                requests.get(url)  # Set verify=False to ignore SSL certificate validation
+                requests.get(url, verify=False)  # Set verify=False to ignore SSL certificate validation
 
             # Delete the message from the queue as the job is considered as DONE
             sqs_client.delete_message(QueueUrl=queue_name, ReceiptHandle=receipt_handle)
