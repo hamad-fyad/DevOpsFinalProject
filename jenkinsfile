@@ -25,7 +25,7 @@ JOB.trigg_by = currentBuild.getBuildCauses('hudson.model.Cause$UserIdCause').use
     
 pipeline {
 
-    agent { label 'ec2' } // Use the label of your EC2 agent
+    agent { label 'ec2' } // Use the label of your EC2 agent knkn
 
 
     // triggers {
