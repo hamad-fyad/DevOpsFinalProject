@@ -2,43 +2,51 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: {{ .Values.ingress.name }}
-  namespace: {{ .Values.ingress.namespace }}  # Assuming you have a namespace value to include
-  annotations:
-    cert-manager.io/cluster-issuer: "letsencrypt-prod"
-    nginx.ingress.kubernetes.io/rewrite-target: /
-    nginx.ingress.kubernetes.io/ssl-redirect: "true"
-    nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
-    nginx.ingress.kubernetes.io/ssl-passthrough: "true"
-    nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
-    nginx.ingress.kubernetes.io/secure-backends: "true"
 spec:
   ingressClassName: nginx  # This is the default ingress class for the NGINX Ingress Controller
   tls:
   - hosts:
-    - {{ .Values.ingress.host }}
+      - {{ .Values.ingress.host }}
     secretName: {{ .Values.ingress.tls }}
   rules:
-  - host: {{ .Values.ingress.host }}
-    http:
-      paths:
-      - pathType: Prefix
-        path: "{{ .Values.ingress.path }}"
-        backend:
-          service:
-            name: {{ .Values.releaseName }}-service
-            port:
-              number: {{ .Values.service.port }}
-  - host: hamad.atech-bot.click
-    http:
-      paths:
-      - pathType: Prefix
-        path: /
-        backend:
-          service:
-            name: hamad-server
-            port:
-              number: 80
-  tls:
-  - hosts:
-    - hamad.atech-bot.click
-    secretName: hamad-tls 
+    - host: {{ .Values.ingress.host }}
+      http:
+        paths:
+          - pathType: Prefix
+            path: "{{ .Values.ingress.path }}"
+            backend:
+              service:
+                name: {{ .Values.releaseName }}-service
+                port:
+                  number: {{ .Values.service.port }}
+# apiVersion: networking.k8s.io/v1
+# kind: Ingress
+# metadata:
+#   name: hamad-ingress
+#   namespace: hamad
+#   annotations:
+#     cert-manager.io/cluster-issuer: "letsencrypt-prod"
+#     nginx.ingress.kubernetes.io/rewrite-target: /
+#     nginx.ingress.kubernetes.io/ssl-redirect: "true"
+#     nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+#     nginx.ingress.kubernetes.io/ssl-passthrough: "true"
+#     nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
+#     nginx.ingress.kubernetes.io/secure-backends: "true"
+    
+# spec:
+#   ingressClassName: nginx
+#   rules:
+#   - host: hamad.atech-bot.click
+#     http:
+#       paths:
+#       - pathType: Prefix
+#         path: /
+#         backend:
+#           service:
+#             name: hamad-server
+#             port:
+#               number: 80
+#   tls:
+#   - hosts:
+#     - hamad.atech-bot.click
+#     secretName: hamad-tls
