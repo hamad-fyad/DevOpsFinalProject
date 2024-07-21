@@ -100,21 +100,22 @@ def consume():
                     'labels': labels,
                     'time': time.time()
                 }
+                logger.info(f'prediction: {prediction_summary}. summary completed')
 
-                insertData(prediction_id,img_name,labels,chat_id,message_id,table_name)
+                insert_data(prediction_id,img_name,labels,chat_id,message_id,table_name)
 
                 url = f"{alb}/results/?predictionId={prediction_id}"
                 # Send a GET request to the URL
-                response = requests.get(url)  # Set verify=False to ignore SSL certificate validation
+                requests.get(url)  # Set verify=False to ignore SSL certificate validation
 
             # Delete the message from the queue as the job is considered as DONE
             sqs_client.delete_message(QueueUrl=queue_name, ReceiptHandle=receipt_handle)
 
-def insertData(prediction_id,filename,data,chat_id,message_id,table_name):
+def insert_data(prediction_id,filename,data,chat_id,message_id,table_name):
 
     # Create a DynamoDB client
     dynamodb = boto3.client('dynamodb',region_name='eu-north-1')
-
+    print(filename)
     # Create an item to store in the table
     item = {
         'prediction_id': {'S': prediction_id},

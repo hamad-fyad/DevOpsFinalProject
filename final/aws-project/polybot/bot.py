@@ -50,7 +50,7 @@ class Bot:
         :return:
         """
         if not self.is_current_msg_photo(msg):
-            raise RuntimeError(f'Message content of type \'photo\' expected')
+            raise RuntimeError("Message content of type \'photo\' expected")
 
         file_info = self.telegram_bot_client.get_file(msg['photo'][-1]['file_id'])
         data = self.telegram_bot_client.download_file(file_info.file_path)

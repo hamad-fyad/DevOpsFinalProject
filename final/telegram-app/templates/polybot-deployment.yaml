@@ -18,8 +18,13 @@ spec:
         app: {{ .Values.releaseName }}-polybot
     spec:
       containers:
+      
         - name: {{ .Values.releaseName }}-polybot
           image: {{ .Values.image.polyRepository }}:{{ .Values.image.polyTag }}
+          resources:
+            limits:
+             cpu: 0.5
+             memory: 512Mi
           env:
             - name: LOAD_BALANCER
               value: "https://hamad.atech-bot.click"
@@ -35,3 +40,4 @@ spec:
         - name: hamad-aws-cred
           secret:
             secretName: hamad-aws-cred
+      automountServiceAccountToken: false

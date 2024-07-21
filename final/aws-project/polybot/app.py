@@ -26,8 +26,7 @@ def get_secret():
             SecretId=secret_name
         )
     except ClientError as e:
-        # For a list of exceptions thrown, see
-        # https://docs.aws.amazon.com/secretsmanager/latest/apireference/API_GetSecretValue.html
+        logger.exception(e)
         raise e
 
     secret = get_secret_value_response['SecretString']
@@ -74,7 +73,7 @@ def webhook():
     return 'Ok'
 
 
-@app.route(f'/results/', methods=['GET'])
+@app.route('/results/', methods=['GET'])
 def results():
     prediction_id = request.args.get('predictionId')
 
@@ -105,7 +104,7 @@ def results():
     return prediction_id
 
 
-@app.route(f'/loadTest/', methods=['POST'])
+@app.route('/loadTest/', methods=['POST'])
 def load_test():
     req = request.get_json()
     bot.handle_message(req['message'])
