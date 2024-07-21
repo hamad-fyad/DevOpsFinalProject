@@ -5,9 +5,9 @@ from bot import ObjectDetectionBot, Bot
 import boto3
 from botocore.exceptions import ClientError
 import json
+import logging
 
 app = flask.Flask(__name__)
-
 
 def get_secret():
     secret_name = "hamad-telegram-token"
@@ -25,12 +25,11 @@ def get_secret():
             SecretId=secret_name
         )
     except ClientError as e:
-        # For a list of exceptions thrown, see
-        # https://docs.aws.amazon.com/secretsmanager/latest/apireference/API_GetSecretValue.html
-        logging.info(f"client error has occurred : {e} ")
+        logging.info(f"client error has occurred : {e}")
         raise e
     except Exception as e:
         raise e
+
     secret = get_secret_value_response['SecretString']
     secret_data = json.loads(secret)
     
@@ -40,13 +39,11 @@ def get_secret():
     return telebot_value
 
 TELEGRAM_TOKEN = get_secret()
-# TODO : Change TELEGRAM_APP_URL to the route 53 domain name and make the ingress 
 TELEGRAM_APP_URL = os.environ["LOAD_BALANCER"]
-  
+
 @app.route('/', methods=['GET'])
 def index():
     return 'Ok'
-
 
 @app.route(f'/{TELEGRAM_TOKEN}/', methods=['POST'])
 def webhook():
@@ -67,13 +64,12 @@ def results():
     
     return 'Ok'
 
-
 def retrieve_results_from_dynamodb(prediction_id):
-    # Create a DynamoDB client
+    # Create a DynamoDB client with the region specified
     dynamodb = boto3.client('dynamodb', region_name='eu-north-1')
 
     # Specify the name of the DynamoDB table
-    table_name = 'hamad-telegram-bot'#TODO change table name 
+    table_name = 'hamad-telegram-bot'
 
     try:
         # Get item from DynamoDB table using prediction_id as the key
@@ -96,22 +92,6 @@ def retrieve_results_from_dynamodb(prediction_id):
     except dynamodb.exceptions.ResourceNotFoundException:
         return None, None, None
 
-
-
-def format_results(results_description):
-
-    return results_description
-
-
-
-@app.route(f'/loadTest/', methods=['POST'])
-def load_test():
-    req = request.get_json()
-    bot.handle_message(req['message'])
-    return 'Ok'
-    
-if __name__ == "__main__":
+if __name__ == '__main__':
     bot = ObjectDetectionBot(TELEGRAM_TOKEN, TELEGRAM_APP_URL)
-
     app.run(host='0.0.0.0', port=8443)
-    print("app running")

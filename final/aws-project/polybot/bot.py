@@ -1,5 +1,4 @@
 import json
-
 import requests
 import telebot
 from botocore.exceptions import ClientError
@@ -8,7 +7,6 @@ import os
 import time
 from telebot.types import InputFile
 import boto3
-
 
 def get_secret():
     secret_name = "hamad-pixabay-token"
@@ -26,13 +24,9 @@ def get_secret():
             SecretId=secret_name
         )
     except ClientError as e:
-        # For a list of exceptions thrown, see
-        # https://docs.aws.amazon.com/secretsmanager/latest/apireference/API_GetSecretValue.html
         raise e
 
     secret = get_secret_value_response['SecretString']
-    
-
     secret_data = json.loads(secret)
     
     # Access the value associated with the 'pixabay_token' key
@@ -40,25 +34,19 @@ def get_secret():
     
     return telebot_value
 
-
-
 class Bot:
-
     def __init__(self, token, telegram_chat_url):
-        # create a new instance of the TeleBot class.
-        # all communication with Telegram servers are done using self.telegram_bot_client
         self.telegram_bot_client = telebot.TeleBot(token)
 
-        # remove any existing webhooks configured in Telegram servers
         self.telegram_bot_client.remove_webhook()
         time.sleep(0.5)
 
-        # todo set the webhook URL change path in ec2 docker container
         self.telegram_bot_client.set_webhook(url=f'{telegram_chat_url}/{token}/',
                                              certificate=open('YOURPUBLIC.pem', 'r'),
                                              timeout=60)
 
         logger.info(f'Telegram Bot information\n\n{self.telegram_bot_client.get_me()}')
+
     def send_text(self, chat_id, text):
         self.telegram_bot_client.send_message(chat_id, text)
 
@@ -69,10 +57,6 @@ class Bot:
         return 'photo' in msg
 
     def download_user_photo(self, msg):
-        """
-        Downloads the photos that sent to the Bot to `photos` directory (should be existed)
-        :return:
-        """
         if not self.is_current_msg_photo(msg):
             raise RuntimeError(f'Message content of type \'photo\' expected')
 
@@ -98,12 +82,9 @@ class Bot:
         )
 
     def handle_message(self, msg):
-        """Bot Main message handler"""
         logger.info(f'Incoming message: {msg}')
         self.send_text(msg['chat']['id'], f'Your original message: {msg["text"]}')
 
-
-# pixabay_token = os.environ['PIXABAY_TOKEN']
 def get_photo(param: str):
     param.replace(" ", "")
     pixabay_token = get_secret()
@@ -130,7 +111,6 @@ def get_photo(param: str):
         logger.error(f"An error occurred: {e}")
         return "Error: An issue occurred while attempting to fetch the photo."
 
-
 def get_info_of_currency(currency: str):
     currency.replace(" ", "")
     try:
@@ -141,7 +121,6 @@ def get_info_of_currency(currency: str):
         print(f"could not get the url check if you typed the right currency {e}")
         logger.info(f"error {e}")
 
-
 def get_activity():
     try:
         url = "https://www.boredapi.com/api/activity?type=recreational"
@@ -149,7 +128,6 @@ def get_activity():
         return res.json()
     except Exception as e:
         logger.info(f"error has occurred {e}")
-
 
 class ObjectDetectionBot(Bot):
     def handle_message(self, msg):
@@ -159,19 +137,18 @@ class ObjectDetectionBot(Bot):
             photo_path = self.download_user_photo(msg)
             photo_key = os.path.basename(photo_path)
             self.download_user_photo(msg)
-            # TODO upload the photo to S3
-            s3 = boto3.client('s3')
+
+            # Initialize S3 client with region
+            s3 = boto3.client('s3', region_name='eu-north-1')
             try:
                 s3.upload_file(photo_path, "hamad-aws-project", photo_key)
-
-                print(
-                    f"Photo uploaded successfully to S3 bucket: {'hamad-aws-project'} with key: {photo_key}")
+                print(f"Photo uploaded successfully to S3 bucket: {'hamad-aws-project'} with key: {photo_key}")
             except Exception as e:
                 print(f"could not upload error : {e}")
                 logger.info(f"uploading to s3 has failed error : {e}")
-            # TODO send a job to the SQS queue
 
-            sqs = boto3.client("sqs")
+            # Initialize SQS client with region
+            sqs = boto3.client("sqs", region_name='eu-north-1')
             queue_url = "https://sqs.eu-north-1.amazonaws.com/933060838752/hamad-aws-project-sqs"
             try:
                 sqs.send_message(
@@ -182,12 +159,11 @@ class ObjectDetectionBot(Bot):
                 print(f"could not send message to sqs queue error : {e}")
                 logger.info(f"sending message to sqs queue has failed error : {e}")
 
-            # TODO send message to the Telegram end-user (e.g. Your image is being processed. Please wait...)
             self.send_text(msg["chat"]["id"], "Your image is being processed. Please wait...")
         elif msg["text"].lower().startswith("pixabay:"):
             try:
                 image_url = get_photo(msg['text'])
-                if image_url.startswith("http"):  # Simple check to ensure it's a URL
+                if image_url.startswith("http"):
                     logger.info(f" ###############{msg}")
                     self.send_text(msg['chat']['id'], f"Image URL: {image_url}")
                 else:

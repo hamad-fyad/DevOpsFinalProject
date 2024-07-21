@@ -16,7 +16,7 @@ JOB.trigg_by = currentBuild.getBuildCauses('hudson.model.Cause$UserIdCause').use
             dockerhub_cred : 'dockerlogin',
             docker_image1  : 'hamadfyad/poly',
             docker_image2  : 'hamadfyad/yolo',
-            docker_tag     : '1.9.2',
+            docker_tag     : '1.9.3',
             aws_cli_cred   : 'hamad-aws-cred',
             project_folder_name : 'final',
             cluster_region : 'us-east-1',
