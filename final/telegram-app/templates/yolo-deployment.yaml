@@ -35,7 +35,7 @@ spec:
             limits:
               cpu: "500m"
           volumeMounts:
-            - name: aws-credentials
+            - name: hamad-aws-credentials
               mountPath: /root/.aws
               readOnly: true
           ports:
@@ -43,6 +43,6 @@ spec:
       imagePullSecrets:
         - name: {{ .Values.imagePullSecrets }}
       volumes:
-        - name: aws-credentials
+        - name: hamad-aws-credentials
           secret:
-            secretName: aws-credentials
+            secretName: hamad-aws-credentials
