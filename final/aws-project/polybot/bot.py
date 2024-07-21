@@ -91,11 +91,9 @@ class ObjectDetectionBot(Bot):
     def handle_message(self, msg):
         # logger.info(f'Incoming message: {msg}')
         if self.is_current_msg_photo(msg):
-            # TODO download the user photo (utilize download_user_photo)
             photo_path = self.download_user_photo(msg)
             photo_key = os.path.basename(photo_path)
 
-            # TODO upload the photo to S3
             s3 = boto3.client('s3',region_name='eu-north-1')
             s3.upload_file(photo_path, "hamad-aws-project", photo_key)
 
@@ -110,7 +108,6 @@ class ObjectDetectionBot(Bot):
             self.send_message_to_sqs(json.dumps(message))
 
         # elif self.custom_startswith(msg["text"], "pixabay:"):
-        #     # TODO download the user photo (utilize download_user_photo)
         #     obj=msg["text"][len("pixabay:"):]
         #     url2 = f"http://pixabay:8082/getImage?imgName={obj}"
         #     data2 = requests.get(url2).content

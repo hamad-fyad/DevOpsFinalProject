@@ -23,10 +23,7 @@ sqs_client = boto3.client('sqs', region_name='eu-north-1')
 with open("data/coco128.yaml", "r") as stream:
     names = yaml.safe_load(stream)['names']
 
-# app = Flask(__name__)
-# @app.route('/', methods=['GET'])
-# def index():
-#     return "Hello from yolo5"
+
 
 def consume():
     while True:
@@ -50,7 +47,6 @@ def consume():
             img_name = params['image']
             chat_id = params['chat_id']
             message_id=params['message_id']
-            #TODO download img_name from S3, store the local image path in original_img_path
             bucket_name = os.getenv('BUCKET_NAME')
 
             original_img_path = str(img_name)
@@ -77,7 +73,6 @@ def consume():
             # The predicted image typically includes bounding boxes drawn around the detected objects, along with class labels and possibly confidence scores.
             predicted_img_path = Path(f'static/data/{prediction_id}/{original_img_path}')
 
-            # TODO Uploads the predicted image (predicted_img_path) to S3 (be careful not to override the original image).
             the_image = "predicted_" + original_img_path
             s3.upload_file(str(predicted_img_path), bucket_name, the_image)
 
@@ -106,13 +101,11 @@ def consume():
                     'time': time.time()
                 }
 
-                # TODO store the prediction_summary in a DynamoDB table
                 insertData(prediction_id,img_name,labels,chat_id,message_id,table_name)
 
-                # TODO perform a GET request to Polybot to `/results` endpoint
                 url = f"{alb}/results/?predictionId={prediction_id}"
                 # Send a GET request to the URL
-                response = requests.get(url, verify=False)  # Set verify=False to ignore SSL certificate validation
+                response = requests.get(url)  # Set verify=False to ignore SSL certificate validation
 
             # Delete the message from the queue as the job is considered as DONE
             sqs_client.delete_message(QueueUrl=queue_name, ReceiptHandle=receipt_handle)

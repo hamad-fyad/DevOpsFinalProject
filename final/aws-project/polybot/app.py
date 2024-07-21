@@ -40,7 +40,7 @@ def get_secret():
     return telebot_value
 
 
-def getSummrize(data):
+def get_summrize(data):
     # Initialize a dictionary to store counts of each class
     class_counts = {}
     # Iterate through the labels and count occurrences of each class
@@ -55,7 +55,6 @@ def getSummrize(data):
     for class_name, count in class_counts.items():
         class_counts_string += f"{class_name}: {count}\n"
 
-    # TODO send results to the Telegram end-user
     return f'Your photo contains : \n{class_counts_string}'
 
 
@@ -79,7 +78,6 @@ def webhook():
 def results():
     prediction_id = request.args.get('predictionId')
 
-    # TODO use the prediction_id to retrieve results from DynamoDB and send to the end-user
     # Create a DynamoDB client
     dynamodb = boto3.client('dynamodb', region_name='eu-north-1')
 
@@ -103,7 +101,7 @@ def results():
     else:
         print(f"No item found with prediction_id: {prediction_id}")
 
-    bot.send_text_with_quote(chat_id, getSummrize(text_results), message_id)
+    bot.send_text_with_quote(chat_id, get_summrize(text_results), message_id)
     return prediction_id
 
 
