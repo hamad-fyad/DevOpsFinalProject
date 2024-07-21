@@ -32,6 +32,6 @@ spec:
       imagePullSecrets:
         - name: {{ .Values.imagePullSecrets }}
       volumes:
-        - name: aws-credentials
+        - name: hamad-aws-cred
           secret:
-            secretName: aws-credentials
+            secretName: hamad-aws-cred
